@@ -1,5 +1,6 @@
 package com.example.canvas.window.component;
 
+
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
@@ -7,11 +8,7 @@ import java.text.DecimalFormat;
 
 import static com.example.canvas.window.util.MathUtil.*;
 
-/**
- * @author LTJ
- * @date 2021/11/3
- */
-public class XAxle extends Canvas {
+public class YAxle extends Canvas {
     private Position o;
     private Position oe;
     private double contentW;
@@ -21,14 +18,14 @@ public class XAxle extends Canvas {
     private double padding;
     private double minGap;
 
-    protected XAxle() {
+    protected YAxle() {
     }
 
-    protected XAxle(double width, double height) {
+    protected YAxle(double width, double height) {
         super(width, height);
     }
 
-    public XAxle(double contentW,double contentH,double xLow,double xHigh,double padding,double minGap){
+    public YAxle(double contentW,double contentH,double xLow,double xHigh,double padding,double minGap){
         this(contentW + 2 * padding,contentH + 2 * padding);
         this.contentW = contentW;
         this.contentH = contentH;
@@ -40,8 +37,8 @@ public class XAxle extends Canvas {
         o.x=padding;
         o.y=contentH+padding;
         oe = new Position();
-        oe.x = o.x + contentW;
-        oe.y=o.y;
+        oe.x = o.x;
+        oe.y=o.y-contentH;
         rePaint();
     }
 
@@ -52,7 +49,7 @@ public class XAxle extends Canvas {
         gc.strokeLine(o.x, o.y, oe.x, oe.y);
         double temp1 = contentW / minGap;
         // 刻度数量
-        double labelCnt = Math.floor(contentW / minGap) + 1;
+        double labelCnt = Math.floor(contentH / minGap) + 1;
 
         double range = xHigh - xLow;
         // 刻度增长步长
@@ -63,20 +60,17 @@ public class XAxle extends Canvas {
         for (int i = 0; i < labelCnt; i++) {
             gc.setLineWidth(1);
             // 画刻度
-            gc.strokeLine(o.x + i * minGap, o.y, o.x + i * minGap, o.y - labelLen);
+            gc.strokeLine(o.x, o.y - i * minGap, o.x + labelLen, o.y - i * minGap);
             // 画数字
             temp1 = xLow + i * step;
             String x = df.format(temp1);
             double charHeight = getCharHeight(x, gc.getFont());
             double charWidth = getCharWidth(x, gc.getFont());
-            gc.fillText(x, o.x + i * minGap - charWidth / 2, o.y + charHeight);
+            gc.fillText(x, o.x - charWidth, o.y - i * minGap + charHeight / 4);
         }
     }
 
     public void rePaint(){
         rePaint(xLow, xHigh, minGap);
-//        GraphicsContext gc = getGraphicsContext2D();
-//        gc.fillRect(1,1,30,30);
     }
-
 }

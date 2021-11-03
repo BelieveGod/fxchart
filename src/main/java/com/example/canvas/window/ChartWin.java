@@ -1,9 +1,10 @@
 package com.example.canvas.window;
 
-import com.example.canvas.window.component.Position;
-import com.example.canvas.window.component.XAxle;
+import com.example.canvas.window.component.*;
 import com.sun.javafx.tk.Toolkit;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -56,18 +57,19 @@ public class ChartWin extends Application {
 //        chartRegion.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID,new CornerRadii(10),new BorderWidths(3))));
 //        Canvas xAxle = createXAxel(WIDTH-2*chartPadding, HEIGHT-2*chartPadding, xLow, xHigh, minGap,chartPadding);
         XAxle xAxle = new XAxle(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, xLow, xHigh, minGap, chartPadding);
-        xAxle.rePaint();
         setBorder(xAxle);
         chartRegion.getChildren().add(xAxle);
         double offset = getAlignCenterX(WIDTH, xAxle.getWidth());
         xAxle.relocate(offset, HEIGHT-xAxle.getHeight());
         // Y轴
-        Canvas yAxel = createYAxel(WIDTH-2*chartPadding, HEIGHT-2*chartPadding, yLow,yHight, minGap,chartPadding);
-        chartRegion.getChildren().add(yAxel);
-        yAxel.relocate(offset,HEIGHT-yAxel.getHeight());
+//        Canvas yAxle = createYAxel(WIDTH-2*chartPadding, HEIGHT-2*chartPadding, yLow,yHight, minGap,chartPadding);
+        YAxle yAxle = new YAxle(WIDTH-2*chartPadding, HEIGHT-2*chartPadding, yLow,yHight, minGap,chartPadding);
+        chartRegion.getChildren().add(yAxle);
+        yAxle.relocate(offset,HEIGHT-yAxle.getHeight());
 
         // 画数据集
-        List<Position> data = generateMockData(xLow, xHigh, yLow, yHight, 6);
+        List<Position> data0 = generateMockData(xLow, xHigh, yLow, yHight, 6);
+        ObservableList<Position> data = FXCollections.observableList(data0);
         StringBuilder sb = new StringBuilder();
         for (Position position : data) {
             sb.append("(").append(position.x).append(",").append(position.y).append(")").append(",");
@@ -76,12 +78,14 @@ public class ChartWin extends Application {
         log.info(sb.toString());
         double[] xs = new double[]{xLow, xHigh};
         double[] ys = new double[]{yLow, yHight};
-        List<Position> positions = dataConverCanvas(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, data, xs, ys, chartPadding);
-        Canvas dataPoint = createDataPoint(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
+        ObservableList<Position> positions = dataConverCanvas(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, data, xs, ys, chartPadding);
+//        Canvas dataPoint = createDataPoint(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
+        DataPoint dataPoint = new DataPoint(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions, chartPadding, 5);
         chartRegion.getChildren().add(dataPoint);
         dataPoint.relocate(offset,HEIGHT-dataPoint.getHeight());
 
-        Canvas dataLine = createDataLine(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
+//        Canvas dataLine = createDataLine(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
+        DataLine dataLine = new DataLine(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
         chartRegion.getChildren().add(dataLine);
         dataLine.relocate(offset,HEIGHT-dataLine.getHeight());
 
@@ -91,7 +95,7 @@ public class ChartWin extends Application {
         vBox.setAlignment(Pos.CENTER);
         setBorder(vBox);
         setSize(vBox, 100, HEIGHT);
-        Button resetBtn = new Button("按钮");
+        Button resetBtn = new Button("mock");
         Button resetBtn2 = new Button("按钮");
         vBox.getChildren().addAll(resetBtn,resetBtn2);
 
@@ -112,11 +116,15 @@ public class ChartWin extends Application {
         });
 
         resetBtn.setOnAction(event -> {
-            xAxle.getGraphicsContext2D().clearRect(0,0,xAxle.getWidth(),xAxle.getHeight());
+            List<Position> datatemp = generateMockData(xLow, xHigh, yLow, yHight, 6);
+            ObservableList<Position> positions1 = FXCollections.observableList(datatemp);
+            ObservableList<Position> positionstemp = dataConverCanvas(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions1, xs, ys, chartPadding);
+            dataLine.getPositions().addAll(positionstemp);
+            ;
         });
 
         resetBtn2.setOnAction(event -> {
-            xAxle.rePaint();
+            dataLine.getPositions().clear();
         });
 
         primaryStage.setScene(scene);
@@ -303,11 +311,11 @@ public class ChartWin extends Application {
         return canvas;
     }
 
-    private List<Position> dataConverCanvas(double contentW, double contentH, List<Position> data, double[] xs, double[] ys, final double padding){
+    private ObservableList<Position> dataConverCanvas(double contentW, double contentH, ObservableList<Position> data, double[] xs, double[] ys, final double padding){
         Position o = new Position();
         o.x=padding;
         o.y=contentH+padding;
-        List<Position> positions = new LinkedList<>();
+        ObservableList<Position> positions = FXCollections.observableArrayList();
         for (Position point : data) {
             double diff = point.x - xs[0];
             double range = xs[1] - xs[0];
@@ -330,6 +338,12 @@ public class ChartWin extends Application {
             position.y = o.y - yOffset;
         }
         return positions;
+    }
+
+    private Position dataConverCanvas(double contentW, double contentH, Position data, double[] xs, double[] ys, final double padding){
+        ObservableList<Position> positions = FXCollections.observableArrayList(data);
+        ObservableList<Position> positions1 = dataConverCanvas(contentW, contentH, positions, xs, ys, padding);
+        return positions1.get(0);
     }
 
 
