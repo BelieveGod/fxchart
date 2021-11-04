@@ -79,16 +79,15 @@ public class ChartWin extends Application {
         double[] xs = new double[]{xLow, xHigh};
         double[] ys = new double[]{yLow, yHight};
         ObservableList<Position> positions = dataConverCanvas(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, data, xs, ys, chartPadding);
-//        Canvas dataPoint = createDataPoint(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
-        DataPoint dataPoint = new DataPoint(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions, chartPadding, 5);
-        chartRegion.getChildren().add(dataPoint);
-        dataPoint.relocate(offset,HEIGHT-dataPoint.getHeight());
 
 //        Canvas dataLine = createDataLine(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
         DataLine dataLine = new DataLine(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions,chartPadding);
         chartRegion.getChildren().add(dataLine);
         dataLine.relocate(offset,HEIGHT-dataLine.getHeight());
 
+        DataPoint dataPoint = new DataPoint(WIDTH - 2 * chartPadding, HEIGHT - 2 * chartPadding, positions, chartPadding, 5);
+        chartRegion.getChildren().add(dataPoint);
+        dataPoint.relocate(offset,HEIGHT-dataPoint.getHeight());
 
         VBox vBox = new VBox(10);
         vBox.setFillWidth(false);
@@ -104,16 +103,12 @@ public class ChartWin extends Application {
         setSize(root, WIDTH+vBox.getPrefWidth(), HEIGHT);
         setBorder(root);
         root.getChildren().addAll(chartRegion, vBox);
-        log.info("chartRegion.width:{},chartRegion.height:{}",chartRegion.getWidth(),chartRegion.getHeight());
         Scene scene = new Scene(root,root.getPrefWidth(),HEIGHT,Color.YELLOW);
 
 //
 
 
-        chartRegion.heightProperty().addListener((observable, oldValue, newValue) -> {
-            double v = newValue.doubleValue();
-            log.info("chartRegion height3:{}", v);
-        });
+
 
         resetBtn.setOnAction(event -> {
             List<Position> datatemp = generateMockData(xLow, xHigh, yLow, yHight, 6);
