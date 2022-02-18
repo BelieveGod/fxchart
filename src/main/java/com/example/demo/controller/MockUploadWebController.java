@@ -1,30 +1,79 @@
 package com.example.demo.controller;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.security.SecureRandom;
+import java.util.*;
 
 /**
  * @author LTJ
  * @date 2021/8/16
  */
 @RestController
+@RequestMapping("/mock")
+@Slf4j
 public class MockUploadWebController {
+    public static SecureRandom random=new SecureRandom();
 
-    @RequestMapping("/tibdm/txieasyui")
-    public Map<String,Object> mock(String taskFramePN,String command,String colname,String colname1,String table,String jsonList){
+    @RequestMapping("/str/**")
+    public String mock9608(HttpServletRequest httpServletRequest){
+        printRequestInfo(httpServletRequest);
+
+        return "success";
+    }
+
+    @RequestMapping("/obj")
+    public Map<String,Object> mockdd(HttpServletRequest httpServletRequest){
+        printRequestInfo(httpServletRequest);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("user", "lining");
+        map.put("id", 1);
+        map.put("date", new Date());
+
+        return map;
+    }
+
+    private void printRequestInfo(HttpServletRequest httpServletRequest){
+        String requestURI = httpServletRequest.getRequestURI();
+        String contextPath = httpServletRequest.getContextPath();
+        String servletPath = httpServletRequest.getServletPath();
+        String pathInfo = httpServletRequest.getPathInfo();
+        log.info("requestURI:{}", requestURI);
+        log.info("contextPath:{}", contextPath);
+        log.info("servletPath:{}", servletPath);
+        log.info("pathInfo:{}", pathInfo);
+    }
+
+    @RequestMapping("/yunda")
+    public Map<String,Object> yunda(){
         Map<String, Object> result = new HashMap<>();
-        List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> item = new HashMap<>();
-        item.put("status", "success");
-        list.add(item);
-        result.put("result", list);
+        result.put("message", "ok");
+        result.put("code",0);
         return result;
+    }
 
+    @RequestMapping("/mfrs/login")
+    public Map<String,Object> mfrsLogin(){
+        Map<String, Object> rsp = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        rsp.put("data", data);
+        data.put("token","3");
+        return rsp;
+    }
+
+    @RequestMapping("/mfrs/info")
+    public Map<String,Object> mfrsInfo(){
+        Map<String, Object> rsp = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
+        rsp.put("data", data);
+        rsp.put("status", "200");
+        int i = random.nextInt(2) + 1;
+        data.put("manufacturerName","随机厂家"+i);
+        data.put("manufacturerId",String.valueOf(i));
+        return rsp;
     }
 }

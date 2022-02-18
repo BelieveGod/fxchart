@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * @author LTJ
  * @date 2021/11/3
  */
-@Component
+//@Component
 public class GraphTask implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
