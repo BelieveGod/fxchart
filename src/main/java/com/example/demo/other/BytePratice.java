@@ -12,6 +12,13 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 public class BytePratice {
+    public static void main(String[] args) {
+        Integer i=null;
+        doa(i);
+    }
 
 
+    private static void doa(int i){
+        System.out.println("i = " + i);
+    }
 }

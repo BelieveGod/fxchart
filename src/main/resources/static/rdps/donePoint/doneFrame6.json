@@ -1,0 +1,17 @@
+{
+  "msgType": "normal",
+  "seq": 1,
+  "publisher": "",
+  "publishTime": "2022-03-02 10:45:36",
+  "data": {
+    "taskId": 4,
+    "cmdSrc":"web",
+    "photoSeq": 6,
+    "parkPointSeq": 5,
+    "carriage": 2,
+    "agvPosPercent": 80,
+    "partInfo": null,
+    "dir": "2022\\04\\07\\20220407100920_580\\deep",
+    "finished":false
+  }
+}

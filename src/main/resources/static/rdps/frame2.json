@@ -1,0 +1,75 @@
+{
+  "msgType": "normal",
+  "seq": 2,
+  "publisher": "",
+  "publishTime": "2022-03-02 10:45:36",
+  "data": {
+    "robotInfos": [
+      {
+        "id": 1,
+        "status": 3,
+        "batteryPercent": 12,
+        "batteryRemainTime": 46,
+        "charging": false,
+        "task": {
+          "id": 4,
+          "laneId":1,
+          "cmdSrc":"web",
+          "trainNo": "1001",
+          "direction": 0,
+          "position": {
+            "x": 1,
+            "y": 1,
+            "angle": 1,
+            "collectPointNum": 2,
+            "parkPointSeq": 1,
+            "carriage":1,
+            "agvPosPercent":10
+          },
+          "percent": 12,
+          "status": 1,
+          "accumulatedTime": 10
+        },
+        "taskQueue": [
+          {
+            "taskId": 4,
+            "laneId":1,
+            "cmdSrc":"web"
+          },
+          {
+            "taskId": 5,
+            "laneId":2,
+            "cmdSrc":"rdps"
+          },
+          {
+            "taskId": 6,
+            "laneId":3,
+            "cmdSrc":"web"
+          }
+        ],
+        "health": [
+          {
+            "objName": "2d相机",
+            "status": 1,
+            "troubleCode": 201,
+            "desc": "对焦失败"
+          }
+        ]
+      }
+    ],
+    "liftInfos": [
+      {
+        "id": 1,
+        "name": "升降台1",
+        "status": ""
+      }
+    ],
+    "chargingPileInfos": [
+      {
+        "id": 1,
+        "name": "",
+        "status": ""
+      }
+    ]
+  }
+}

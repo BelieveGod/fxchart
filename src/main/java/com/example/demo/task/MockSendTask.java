@@ -24,7 +24,7 @@ import static cn.hutool.core.date.DatePattern.NORM_DATETIME_PATTERN;
  * @author LTJ
  * @date 2022/2/18
  */
-@Component
+//@Component
 @Slf4j
 public class MockSendTask {
 
@@ -39,10 +39,10 @@ public class MockSendTask {
         CompletableFuture.supplyAsync(this::sendDeviceData)
                 .whenComplete((aBoolean, throwable) -> log.info("告警数据上传完成!"));
         UUID uuid = UUID.fastUUID();
-        boolean b = sendCheckData(uuid);
-        if(b){
-            sendAlarmData(uuid);
-        }
+//        boolean b = sendCheckData(uuid);
+//        if(b){
+//            sendAlarmData(uuid);
+//        }
 
     }
 
@@ -214,7 +214,7 @@ public class MockSendTask {
         deviceData.set("provider", "QIHUI");
         deviceData.set("subSysCode", "360");
         deviceData.set("stationId", 3);
-        deviceData.set("objType", 25);
+//        deviceData.set("objType", 25);
         deviceData.set("objTypeName", "QIHUI");
         deviceData.set("objCode",1);
         deviceData.set("objName", "LD");

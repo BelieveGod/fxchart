@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.other.Animal;
+import com.example.demo.other.Bird;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,10 +40,12 @@ public class MockUploadWebController {
     }
 
     private void printRequestInfo(HttpServletRequest httpServletRequest){
+        String requestURL = httpServletRequest.getRequestURL().toString();
         String requestURI = httpServletRequest.getRequestURI();
         String contextPath = httpServletRequest.getContextPath();
         String servletPath = httpServletRequest.getServletPath();
         String pathInfo = httpServletRequest.getPathInfo();
+        log.info("requestURL:{}", requestURL);
         log.info("requestURI:{}", requestURI);
         log.info("contextPath:{}", contextPath);
         log.info("servletPath:{}", servletPath);
@@ -52,7 +56,7 @@ public class MockUploadWebController {
     public Map<String,Object> yunda(){
         Map<String, Object> result = new HashMap<>();
         result.put("message", "ok");
-        result.put("code",0);
+        result.put("code","00");
         return result;
     }
 
@@ -75,5 +79,14 @@ public class MockUploadWebController {
         data.put("manufacturerName","随机厂家"+i);
         data.put("manufacturerId",String.valueOf(i));
         return rsp;
+    }
+
+    @RequestMapping("/testExtendJson")
+    public Animal testExtendJson(){
+        Bird bird = new Bird();
+        bird.setName("小鸟");
+        bird.setAge(10);
+        Animal animal = bird;
+        return animal;
     }
 }
