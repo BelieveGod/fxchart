@@ -32,4 +32,4 @@ spring:
     exclude: org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
 
 nannar:
-  enable-mock-robot: true
+  enable-mock-robot: false
